@@ -3,8 +3,8 @@ package com.vessel.ui;
 import com.vessel.cards.Card;
 import com.vessel.cards.Deck;
 import com.vessel.combat.CombatEncounter;
-import com.vessel.dungeon.DungeonBuilder;
-import com.vessel.dungeon.Room;
+import com.vessel.factory.CryptEnemyFactory;
+import com.vessel.factory.EnemyFactory;
 import com.vessel.model.Enemy;
 import com.vessel.model.Hero;
 import javafx.application.Application;
@@ -23,19 +23,19 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * First playable prototype: walks the hero through the dungeon's rooms in order,
- * one fight per room. The UI is built in code for now; it only reads game state and
- * calls into {@link CombatEncounter}, so the rules stay out of the view.
+ * First playable prototype: the hero fights a short list of enemies in order.
+ * The UI is built in code for now; it only reads game state and calls into
+ * {@link CombatEncounter}, so the rules stay out of the view.
  */
 public class VesselApp extends Application {
     private final Random random = new Random();
 
     private Hero hero;
-    private List<Room> rooms;
-    private int roomIndex;
+    private List<Enemy> enemies;
+    private int enemyIndex;
     private CombatEncounter combat;
 
-    private final Label roomLabel = new Label();
+    private final Label titleLabel = new Label();
     private final Label heroLabel = new Label();
     private final Label enemyLabel = new Label();
     private final Label intentLabel = new Label();
@@ -45,7 +45,7 @@ public class VesselApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        roomLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         enemyLabel.setStyle("-fx-font-size: 16px;");
         log.setEditable(false);
         log.setWrapText(true);
@@ -53,7 +53,7 @@ public class VesselApp extends Application {
         handBox.setAlignment(Pos.CENTER);
         actionBox.setAlignment(Pos.CENTER);
 
-        VBox top = new VBox(6, roomLabel, heroLabel);
+        VBox top = new VBox(6, titleLabel, heroLabel);
         VBox center = new VBox(6, enemyLabel, intentLabel);
         center.setAlignment(Pos.CENTER);
         VBox bottom = new VBox(10, handBox, actionBox, log);
@@ -69,36 +69,35 @@ public class VesselApp extends Application {
     }
 
     private void newRun() {
+        EnemyFactory factory = new CryptEnemyFactory();
         hero = new Hero("The Vessel", 60, Deck.starter(random));
-        rooms = DungeonBuilder.buildDefault().getRooms();
-        roomIndex = 0;
+        enemies = List.of(factory.createGrunt(), factory.createElite(), factory.createBoss());
+        enemyIndex = 0;
         log.clear();
         write("You wake in the dark. Somewhere above is the way out.");
-        enterRoom();
+        startFight();
     }
 
-    private void enterRoom() {
-        Room room = rooms.get(roomIndex);
-        if (room.isExit()) {
+    private void startFight() {
+        if (enemyIndex >= enemies.size()) {
             combat = null;
-            write("You climb into the light. You escaped... but how much of you is left? Humanity: "
-                    + hero.getHumanity());
+            write("You climb into the light. You escaped!");
             showEndScreen("ESCAPED");
             return;
         }
-        combat = new CombatEncounter(hero, room.getEnemy());
+        Enemy enemy = enemies.get(enemyIndex);
+        combat = new CombatEncounter(hero, enemy);
         combat.start();
-        write("--- " + room.getName() + ": a " + room.getEnemy().getName() + " appears! ---");
+        write("--- A " + enemy.getName() + " appears! ---");
         refresh();
     }
 
     private void refresh() {
-        Room room = rooms.get(roomIndex);
         Deck deck = hero.getDeck();
-        roomLabel.setText(room.getName() + "   (room " + (roomIndex + 1) + " of " + rooms.size() + ")");
-        heroLabel.setText(String.format("%s   HP %d/%d   Block %d   Energy %d/%d   Humanity %d   Draw %d   Discard %d",
+        titleLabel.setText("Fight " + (enemyIndex + 1) + " of " + enemies.size());
+        heroLabel.setText(String.format("%s   HP %d/%d   Block %d   Energy %d/%d   Draw %d   Discard %d",
                 hero.getName(), hero.getHealth(), hero.getMaxHealth(), hero.getBlock(),
-                combat.getEnergy(), Hero.ENERGY_PER_TURN, hero.getHumanity(),
+                combat.getEnergy(), Hero.ENERGY_PER_TURN,
                 deck.getDrawPileSize(), deck.getDiscardPileSize()));
 
         Enemy enemy = combat.getEnemy();
@@ -119,8 +118,8 @@ public class VesselApp extends Application {
             case VICTORY -> {
                 intentLabel.setText("The " + enemy.getName() + " falls.");
                 actionBox.getChildren().addAll(
-                        button("Possess (-" + enemy.getHumanityCost() + " humanity)", this::possessAndContinue),
-                        button("Leave the body", this::nextRoom));
+                        button("Possess", this::possessAndContinue),
+                        button("Leave the body", this::nextFight));
             }
             case DEFEAT -> {
                 intentLabel.setText("");
@@ -154,22 +153,16 @@ public class VesselApp extends Application {
 
     private void possessAndContinue() {
         write(combat.possess());
-        if (hero.isLost()) {
-            write("Nothing of you remains. The Vessel belongs to the dungeon now.");
-            combat = null;
-            showEndScreen("LOST");
-            return;
-        }
-        nextRoom();
+        nextFight();
     }
 
-    private void nextRoom() {
-        roomIndex++;
-        enterRoom();
+    private void nextFight() {
+        enemyIndex++;
+        startFight();
     }
 
     private void showEndScreen(String title) {
-        roomLabel.setText(title);
+        titleLabel.setText(title);
         intentLabel.setText("");
         handBox.getChildren().clear();
         actionBox.getChildren().setAll(button("New Run", this::newRun));

@@ -6,7 +6,7 @@ package com.vessel.model;
  */
 public abstract class Entity {
     private final String name;
-    private int maxHealth;
+    private final int maxHealth;
     private int health;
     private int block;
 
@@ -35,15 +35,6 @@ public abstract class Entity {
 
     public void clearBlock() {
         block = 0;
-    }
-
-    public void heal(int amount) {
-        health = Math.min(maxHealth, health + Math.max(0, amount));
-    }
-
-    public void increaseMaxHealth(int amount) {
-        maxHealth += amount;
-        health += amount;
     }
 
     public boolean isAlive() {

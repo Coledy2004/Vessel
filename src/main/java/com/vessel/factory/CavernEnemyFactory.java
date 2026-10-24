@@ -16,18 +16,18 @@ public class CavernEnemyFactory implements EnemyFactory {
     @Override
     public Enemy createGrunt() {
         return new Enemy("Cave Spider", 24, new AggressiveBehavior(7),
-                new AttackCard("Venom Fang", 1, 9), 6);
+                new AttackCard("Venom Fang", 1, 9));
     }
 
     @Override
     public Enemy createElite() {
         return new Enemy("Stone Troll", 45, new DefensiveBehavior(8, 8),
-                new BlockCard("Stone Hide", 1, 11), 12);
+                new BlockCard("Stone Hide", 1, 11));
     }
 
     @Override
     public Enemy createBoss() {
         return new Enemy("Wyrm", 70, new AggressiveBehavior(14),
-                new AttackCard("Wyrmfire", 2, 22), 30);
+                new AttackCard("Wyrmfire", 2, 22));
     }
 }

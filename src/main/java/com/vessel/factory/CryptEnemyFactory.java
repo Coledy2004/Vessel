@@ -16,18 +16,18 @@ public class CryptEnemyFactory implements EnemyFactory {
     @Override
     public Enemy createGrunt() {
         return new Enemy("Skeleton", 20, new AggressiveBehavior(5),
-                new AttackCard("Bone Rattle", 1, 8), 5);
+                new AttackCard("Bone Rattle", 1, 8));
     }
 
     @Override
     public Enemy createElite() {
         return new Enemy("Grave Knight", 34, new DefensiveBehavior(6, 6),
-                new BlockCard("Rusted Bulwark", 1, 9), 10);
+                new BlockCard("Rusted Bulwark", 1, 9));
     }
 
     @Override
     public Enemy createBoss() {
         return new Enemy("Lich", 55, new AggressiveBehavior(11),
-                new AttackCard("Soul Drain", 2, 18), 25);
+                new AttackCard("Soul Drain", 2, 18));
     }
 }

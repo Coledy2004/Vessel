@@ -2,10 +2,7 @@ package com.vessel.cards;
 
 import com.vessel.model.Entity;
 
-/**
- * A playable card. This is the "component" interface that both basic cards
- * and {@link CardDecorator}s implement (Decorator pattern).
- */
+/** A playable card. */
 public interface Card {
     String getName();
 

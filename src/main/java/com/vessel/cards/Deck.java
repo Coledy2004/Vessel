@@ -36,15 +36,6 @@ public class Deck {
         cards.add(card);
     }
 
-    /** Swaps one card in the deck for another (e.g. replacing a starter card with a possessed one). */
-    public void replace(Card oldCard, Card newCard) {
-        int index = cards.indexOf(oldCard);
-        if (index < 0) {
-            throw new IllegalArgumentException(oldCard.getName() + " is not in the deck");
-        }
-        cards.set(index, newCard);
-    }
-
     /** Resets the piles at the start of a fight: everything shuffled into the draw pile. */
     public void startCombat() {
         drawPile.clear();

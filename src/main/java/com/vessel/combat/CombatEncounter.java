@@ -1,9 +1,6 @@
 package com.vessel.combat;
 
-import com.vessel.cards.AttackCard;
 import com.vessel.cards.Card;
-import com.vessel.cards.Deck;
-import com.vessel.cards.MutatedCard;
 import com.vessel.model.Enemy;
 import com.vessel.model.Hero;
 
@@ -13,7 +10,6 @@ import com.vessel.model.Hero;
  */
 public class CombatEncounter {
     public static final int HAND_SIZE = 5;
-    public static final int MUTATION_BONUS_DAMAGE = 3;
 
     public enum Outcome { IN_PROGRESS, VICTORY, DEFEAT }
 
@@ -69,29 +65,15 @@ public class CombatEncounter {
         return log;
     }
 
-    /**
-     * After winning, the hero possesses the corpse: they gain the enemy's signature card,
-     * lose some humanity, and one of their basic attacks mutates.
-     */
+    /** After winning, the hero possesses the corpse and adds the enemy's signature card to their deck. */
     public String possess() {
         if (getOutcome() != Outcome.VICTORY || possessed) {
             throw new IllegalStateException("There is nothing to possess");
         }
         possessed = true;
-        Deck deck = hero.getDeck();
-        deck.add(enemy.getPossessionCard());
-        hero.loseHumanity(enemy.getHumanityCost());
-
-        String log = hero.getName() + " possesses the " + enemy.getName() + " and gains "
-                + enemy.getPossessionCard().getName() + ". Humanity: " + hero.getHumanity() + ".";
-        for (Card card : deck.getCards()) {
-            if (card instanceof AttackCard) {
-                deck.replace(card, new MutatedCard(card, MUTATION_BONUS_DAMAGE));
-                log += " Your body twists: " + card.getName() + " mutates.";
-                break;
-            }
-        }
-        return log;
+        hero.getDeck().add(enemy.getPossessionCard());
+        return hero.getName() + " possesses the " + enemy.getName() + " and gains "
+                + enemy.getPossessionCard().getName() + ".";
     }
 
     public Outcome getOutcome() {
