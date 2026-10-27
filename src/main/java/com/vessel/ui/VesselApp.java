@@ -26,6 +26,8 @@ import java.util.Random;
  * First playable prototype: the hero fights a short list of enemies in order.
  * The UI is built in code for now; it only reads game state and calls into
  * {@link CombatEncounter}, so the rules stay out of the view.
+ *
+ * Used AI to help create this file
  */
 public class VesselApp extends Application {
     private final Random random = new Random();
