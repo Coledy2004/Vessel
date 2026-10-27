@@ -2,6 +2,7 @@ package com.vessel.factory;
 
 import com.vessel.cards.AttackCard;
 import com.vessel.cards.BlockCard;
+import com.vessel.model.Boss;
 import com.vessel.model.Enemy;
 import com.vessel.strategy.AggressiveBehavior;
 import com.vessel.strategy.DefensiveBehavior;
@@ -26,8 +27,9 @@ public class CavernEnemyFactory implements EnemyFactory {
     }
 
     @Override
-    public Enemy createBoss() {
-        return new Enemy("Wyrm", 70, new AggressiveBehavior(14),
+    public Boss createBoss() {
+        // Attacks recklessly, then curls up in its scales and bites back once badly hurt.
+        return new Boss("Wyrm", 70, new AggressiveBehavior(12), new DefensiveBehavior(14, 12),
                 new AttackCard("Wyrmfire", 2, 22));
     }
 }

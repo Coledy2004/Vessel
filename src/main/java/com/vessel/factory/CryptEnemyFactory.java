@@ -2,6 +2,7 @@ package com.vessel.factory;
 
 import com.vessel.cards.AttackCard;
 import com.vessel.cards.BlockCard;
+import com.vessel.model.Boss;
 import com.vessel.model.Enemy;
 import com.vessel.strategy.AggressiveBehavior;
 import com.vessel.strategy.DefensiveBehavior;
@@ -26,8 +27,9 @@ public class CryptEnemyFactory implements EnemyFactory {
     }
 
     @Override
-    public Enemy createBoss() {
-        return new Enemy("Lich", 55, new AggressiveBehavior(11),
+    public Boss createBoss() {
+        // Hides behind bone wards, then goes all-out once badly hurt.
+        return new Boss("Lich", 55, new DefensiveBehavior(7, 8), new AggressiveBehavior(13),
                 new AttackCard("Soul Drain", 2, 18));
     }
 }

@@ -19,11 +19,19 @@ public class Enemy extends Entity {
 
     /** Runs this enemy's turn against the target and returns a log message describing it. */
     public String takeTurn(Entity target) {
-        return behavior.act(this, target);
+        return currentBehavior().act(this, target);
     }
 
     public String getIntent() {
-        return behavior.describeIntent(this);
+        return currentBehavior().describeIntent(this);
+    }
+
+    /**
+     * The behavior used this turn. Regular enemies always use the one they were built with;
+     * subclasses such as {@link Boss} override this to change tactics mid-fight.
+     */
+    protected EnemyBehavior currentBehavior() {
+        return behavior;
     }
 
     /** The card the hero gains by possessing this enemy's corpse. */
