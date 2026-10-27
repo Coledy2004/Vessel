@@ -3,10 +3,6 @@ package com.vessel.model;
 import com.vessel.cards.Card;
 import com.vessel.strategy.EnemyBehavior;
 
-/**
- * The strongest enemy in a region. A boss fights with its normal behavior until it drops to
- * half health, then becomes enraged and switches to a second behavior for the rest of the fight.
- */
 public class Boss extends Enemy {
     private final EnemyBehavior enragedBehavior;
 
@@ -16,7 +12,6 @@ public class Boss extends Enemy {
         this.enragedBehavior = enragedBehavior;
     }
 
-    /** True once the boss is at or below half of its maximum health. */
     public boolean isEnraged() {
         return getHealth() <= getMaxHealth() / 2;
     }

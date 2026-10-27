@@ -7,7 +7,6 @@ import com.vessel.model.Enemy;
 import com.vessel.strategy.AggressiveBehavior;
 import com.vessel.strategy.DefensiveBehavior;
 
-/** Beasts for the deeper cavern region of the dungeon. */
 public class CavernEnemyFactory implements EnemyFactory {
     @Override
     public String getRegionName() {
@@ -28,7 +27,6 @@ public class CavernEnemyFactory implements EnemyFactory {
 
     @Override
     public Boss createBoss() {
-        // Attacks recklessly, then curls up in its scales and bites back once badly hurt.
         return new Boss("Wyrm", 70, new AggressiveBehavior(12), new DefensiveBehavior(14, 12),
                 new AttackCard("Wyrmfire", 2, 22));
     }

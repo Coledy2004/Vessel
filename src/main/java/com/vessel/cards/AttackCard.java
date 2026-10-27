@@ -2,7 +2,6 @@ package com.vessel.cards;
 
 import com.vessel.model.Entity;
 
-/** Deals a fixed amount of damage to the target. */
 public class AttackCard implements Card {
     private final String name;
     private final int cost;

@@ -5,10 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The hero's cards. Owns the full card list plus the draw pile, hand and discard pile
- * used during combat.
- */
+
 public class Deck {
     private final List<Card> cards = new ArrayList<>();
     private final List<Card> drawPile = new ArrayList<>();
@@ -20,7 +17,7 @@ public class Deck {
         this.random = random;
     }
 
-    /** The standard deck the hero starts a run with. */
+
     public static Deck starter(Random random) {
         Deck deck = new Deck(random);
         for (int i = 0; i < 5; i++) {
@@ -36,7 +33,7 @@ public class Deck {
         cards.add(card);
     }
 
-    /** Resets the piles at the start of a fight: everything shuffled into the draw pile. */
+
     public void startCombat() {
         drawPile.clear();
         hand.clear();
@@ -59,7 +56,6 @@ public class Deck {
         }
     }
 
-    /** Moves a card from the hand to the discard pile after it is played. */
     public void discard(Card card) {
         if (hand.remove(card)) {
             discardPile.add(card);

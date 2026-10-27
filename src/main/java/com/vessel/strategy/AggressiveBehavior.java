@@ -3,7 +3,7 @@ package com.vessel.strategy;
 import com.vessel.model.Enemy;
 import com.vessel.model.Entity;
 
-/** Hits as hard as it can every turn. */
+
 public class AggressiveBehavior implements EnemyBehavior {
     private final int damage;
 

@@ -2,7 +2,7 @@ package com.vessel.model;
 
 import com.vessel.cards.Deck;
 
-/** The player character. */
+
 public class Hero extends Entity {
     public static final int ENERGY_PER_TURN = 3;
 

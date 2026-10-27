@@ -2,7 +2,6 @@ package com.vessel.cards;
 
 import com.vessel.model.Entity;
 
-/** Gives the user block that absorbs incoming damage until their next turn. */
 public class BlockCard implements Card {
     private final String name;
     private final int cost;

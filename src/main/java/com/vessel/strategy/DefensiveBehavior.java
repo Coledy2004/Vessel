@@ -3,7 +3,7 @@ package com.vessel.strategy;
 import com.vessel.model.Enemy;
 import com.vessel.model.Entity;
 
-/** Shields itself each turn and chips at the target with a weaker attack. */
+
 public class DefensiveBehavior implements EnemyBehavior {
     private final int damage;
     private final int block;

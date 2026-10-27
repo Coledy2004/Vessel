@@ -1,9 +1,6 @@
 package com.vessel.model;
 
-/**
- * Anything that can fight: the hero or an enemy.
- * Holds health and block (temporary shield that absorbs damage this turn).
- */
+
 public abstract class Entity {
     private final String name;
     private final int maxHealth;
@@ -16,7 +13,6 @@ public abstract class Entity {
         this.health = maxHealth;
     }
 
-    /** Applies damage, letting block absorb it first. Returns damage actually taken to health. */
     public int takeDamage(int amount) {
         if (amount <= 0) {
             return 0;

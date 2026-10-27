@@ -4,10 +4,7 @@ import com.vessel.cards.Card;
 import com.vessel.model.Enemy;
 import com.vessel.model.Hero;
 
-/**
- * One turn-based fight between the hero and a single enemy. Contains only game rules,
- * no UI code, so it can be unit tested and driven by any front end.
- */
+
 public class CombatEncounter {
     public static final int HAND_SIZE = 5;
 
@@ -23,7 +20,6 @@ public class CombatEncounter {
         this.enemy = enemy;
     }
 
-    /** Shuffles the deck and begins the hero's first turn. */
     public void start() {
         hero.getDeck().startCombat();
         startHeroTurn();
@@ -51,7 +47,6 @@ public class CombatEncounter {
         return log;
     }
 
-    /** Ends the hero's turn, lets the enemy act, then starts the hero's next turn. */
     public String endTurn() {
         if (getOutcome() != Outcome.IN_PROGRESS) {
             throw new IllegalStateException("Combat is already over");
@@ -65,7 +60,6 @@ public class CombatEncounter {
         return log;
     }
 
-    /** After winning, the hero possesses the corpse and adds the enemy's signature card to their deck. */
     public String possess() {
         if (getOutcome() != Outcome.VICTORY || possessed) {
             throw new IllegalStateException("There is nothing to possess");
